@@ -1,25 +1,28 @@
-
 #include <SimpleTimer.h>
 
+#define BLYNK_TEMPLATE_ID "TMPLBnSveeCR"
+#define BLYNK_DEVICE_NAME "parking"
+#define BLYNK_AUTH_TOKEN "NKTgxkDkIpxgDkwweyqNCI7znv4BzIkL"
+
 #define BLYNK_PRINT Serial
+
 #include <ESP8266WiFi.h>
 #include <BlynkSimpleEsp8266.h>
 #include <SoftwareSerial.h>
+#include <SimpleTimer.h>
 
+SoftwareSerial arduinoUno(0,1); //( RX, TX )
 
-#define BLYNK_AUTH_TOKEN "wqYWSTihthjdc_n4OWdvXx63gAzHWzkC"
-#define BLYNK_TEMPLATE_ID "TMPLS8yRDuRl"
-#define BLYNK_DEVICE_NAME "parkinggg"
+char auth[] = "NKTgxkDkIpxgDkwweyqNCI7znv4BzIkL";
 
 // Your WiFi credentials.
-// Set password to "" for open networks.
 char ssid[] = "D-Link_DIR-615";
 char pass[] = "basu@1234";
 
 SimpleTimer timer;
 
-String myString; // complete message from arduino, which consistors of snesors data
-char rdata; // received charactors
+String myString; // complete message from arduino, which consists of sensors data
+char rdata; // received characters
 
 int firstVal, secondVal,thirdVal; // sensors 
 int led1,led2,led3,led4,led5,led6;
@@ -34,14 +37,12 @@ void myTimerEvent()
   
 }
 
-
-
 void setup()
 {
   // Debug console
   Serial.begin(9600);
 
-  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
+  Blynk.begin(auth, ssid, pass);
 
     timer.setInterval(1000L,sensorvalue1); 
     timer.setInterval(1000L,sensorvalue2); 
@@ -65,7 +66,7 @@ void loop()
   {
     rdata = Serial.read(); 
     myString = myString+ rdata; 
-   // Serial.print(rdata);
+    //Serial.print(rdata);
     if( rdata == '\n')
     {
      Serial.println(myString); 
@@ -146,10 +147,6 @@ int sdata = led6;
   Blynk.virtualWrite(V15, sdata);
 
 }
-
-
-
-
 
 
 String getValue(String data, char separator, int index)
